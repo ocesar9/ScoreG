@@ -1,0 +1,7 @@
+<resources>
+    <style name="ScoreGTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_spring</item>
+        <item name="colorOnSecondary">@color/purple_amethyst</item>
+        <item name="colorPrimaryDark">@color/black_crow</item>
+    </style>
+</resources>
