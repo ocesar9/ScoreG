@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "618610373",
+    "project_id": "scoreg-f01df",
+    "storage_bucket": "scoreg-f01df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618610373:android:529d58aa0b53ea6e6d7aac",
+        "android_client_info": {
+          "package_name": "com.example.scoreg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw2fG2RSo--uWdL-oRdynAXau_9srs0Y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
