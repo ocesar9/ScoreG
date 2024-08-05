@@ -33,19 +33,26 @@ class MainActivity : AppCompatActivity() {
 
         // Inicializa o Firebase
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        database = FirebaseDatabase.getInstance().getReference("games")
 
-        // Leitura dos dados do banco de dados
+        // Objeto database guarda a tabela games
+        database = FirebaseDatabase.getInstance().getReference("games")
+        // Database vai fazer ações toda vez que identificar alterações no Firebase
         database.addValueEventListener(object : ValueEventListener {
+            // Quando a tabela games for alterada...
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Limpe a lista gameList...
                 gameList.clear()
+                // Cada cada filho de games...
                 for (gameSnapshot in dataSnapshot.children) {
                     val game = gameSnapshot.getValue(Game::class.java)
+                    // Adicione cada filho de games à lsita gameList
                     game?.let { gameList.add(it) }
                 }
+                // Atualiza a interface para apresentar as alterações em games
                 gameAdapter.notifyDataSetChanged()
             }
 
+            // Não foi possível coletar dados do Firebase
             override fun onCancelled(error: DatabaseError) {
                 Log.w("MainActivity", "Failed to read value.", error.toException())
             }
