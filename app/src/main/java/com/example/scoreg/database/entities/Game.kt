@@ -1,4 +1,4 @@
-package com.example.scoreg.DB
+package com.example.scoreg.database.entities
 
 data class Game(
     val description: String = "",

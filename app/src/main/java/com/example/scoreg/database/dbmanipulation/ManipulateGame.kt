@@ -1,5 +1,6 @@
-package com.example.scoreg.DB
+package com.example.scoreg.database.dbmanipulation
 
+import com.example.scoreg.database.entities.Game
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -34,7 +35,8 @@ class ManipulateGame {
         val database = FirebaseDatabase.getInstance()
         val gamesRef = database.getReference("games")
 
-        gamesRef.orderByChild("release_year").addListenerForSingleValueEvent(object : ValueEventListener {
+        gamesRef.orderByChild("release_year").addListenerForSingleValueEvent(object :
+            ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val gamesList = mutableListOf<Game>()
                 for (gameSnapshot in snapshot.children) {

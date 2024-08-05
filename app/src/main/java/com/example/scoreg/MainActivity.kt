@@ -2,12 +2,10 @@ package com.example.scoreg
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.scoreg.DB.Game
-import com.example.scoreg.DB.ManipulateGame
+import com.example.scoreg.database.dbmanipulation.ManipulateGame
 import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
-    private val gameList = mutableListOf<Game>()
     private val manipulateGame = ManipulateGame()
 
     override fun onCreate(savedInstanceState: Bundle?) {
