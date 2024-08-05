@@ -9,7 +9,7 @@ import com.google.firebase.database.ValueEventListener
 
 class ManipulateUser {
 
-    // Função para buscar lista de jogos específica de um usuário
+    // Função que retorna List de jogos especificada de um User
     fun fetchUserGamesList(
         userId: String,
         listType: String,

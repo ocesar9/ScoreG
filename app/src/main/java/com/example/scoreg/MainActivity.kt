@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
         }
          */
 
-        // ID do usuário a ser buscado
-
         val userId = "001" // Exemplo de ID
 
         // Chama a função fetchUserGamesList passando o usuário e a lista desejada do mesmo
