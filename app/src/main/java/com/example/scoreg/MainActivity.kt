@@ -19,19 +19,25 @@ class MainActivity : AppCompatActivity() {
 
         // Chama a função fetchGames
         manipulateGame.fetchGames { gamesList ->
-            // Utilize a lista de jogos aqui
             for (game in gamesList) {
                 println(game.title)
             }
         }
 
-        // Chama a função de busca
+        // Chama a função searchGameByTitle
         val titleToSearch = "The Witcher 3: Wild Hunt"
         manipulateGame.searchGameByTitle(titleToSearch) { game ->
             if (game != null) {
                 println("Game found: ${game.title}")
             } else {
                 println("Game not found")
+            }
+        }
+
+        // Chama a função fetchGamesSortedByYear
+        manipulateGame.fetchGamesSortedByYear { gamesList ->
+            for (game in gamesList) {
+                println("Game: ${game.title}, Year: ${game.release_year}")
             }
         }
     }
