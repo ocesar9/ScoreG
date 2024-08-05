@@ -44,7 +44,7 @@ class ManipulateGame {
                     game?.let { gamesList.add(it) }
                 }
                 // Ordena a lista de jogos por ano de lançamento mais recente
-                val sortedList = gamesList.sortedByDescending { it.release_year }
+                val sortedList = gamesList.sortedByDescending { it.releaseYear }
                 callback(sortedList)
             }
 

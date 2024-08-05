@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         // Chama a função fetchGamesSortedByYear
         manipulateGame.fetchGamesSortedByYear { gamesList ->
             for (game in gamesList) {
-                println("Game: ${game.title}, Year: ${game.release_year}")
+                println("Game: ${game.title}, Year: ${game.releaseYear}")
             }
         }
     }
