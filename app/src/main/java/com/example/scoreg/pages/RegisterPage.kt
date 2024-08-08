@@ -7,7 +7,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
@@ -22,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.scoreg.LoginActivity
 import com.example.scoreg.MainActivity
 import com.example.scoreg.R
 import com.example.scoreg.RegisterActivity
@@ -30,9 +30,11 @@ import com.example.scoreg.components.CustomButton
 import com.example.scoreg.components.FormField
 
 @Composable
-fun LoginPage(modifier: Modifier = Modifier) {
+fun RegisterPage(modifier: Modifier = Modifier) {
+    var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
     val activity = LocalContext.current as? Activity
 
     Column(modifier = Modifier
@@ -51,38 +53,47 @@ fun LoginPage(modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo"
-
             )
             Text(
-                text = "Faça login com sua conta",
+                text = "Crie sua conta",
                 fontSize = 20.sp,
                 modifier = Modifier.align(Alignment.Start)
             )
+            FormField(value = name, onValueChange = {name = it}, placeholder = "Digite o seu nome", type = "text")
+
             FormField(value = email, onValueChange = {email = it}, placeholder = "E-mail", type = "email")
 
             FormField(value = password, onValueChange = {password = it}, placeholder = "Senha", type = "password")
 
+            FormField(value = confirmPassword, onValueChange = {confirmPassword = it}, placeholder = "Confirme sua senha", type = "password")
+
             CustomButton(
                 onClick = {
-                    Toast.makeText(activity, "", Toast.LENGTH_LONG).show()
-                    activity?.startActivity(
-                        Intent(activity, MainActivity::class.java).setFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    if (password != confirmPassword) {
+                        Toast.makeText(activity, "As senhas não coincidem!", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(activity, "Cadastro realizado com Sucesso!", Toast.LENGTH_LONG).show()
+                        activity?.startActivity(
+                            Intent(activity, LoginActivity::class.java).setFlags(
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            )
                         )
-                    )
+                    }
+                    name = "";
                     email = "";
                     password = "";
-            }, buttonText = "Entrar")
-            
+                    confirmPassword = "";
+            }, buttonText = "Cadastrar")
+
             ClickableText(
-                text = "Você não possui conta? Cadastre-se",
+                text = "Você já possui conta? Entre",
                 onClick = {
                     activity?.startActivity(
-                        Intent(activity, RegisterActivity::class.java).setFlags(
+                        Intent(activity, LoginActivity::class.java).setFlags(
                             Intent.FLAG_ACTIVITY_SINGLE_TOP
                         )
                     )
-                 }
+                }
             )
 
         }
