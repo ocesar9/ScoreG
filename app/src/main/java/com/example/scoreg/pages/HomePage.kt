@@ -1,26 +1,65 @@
 package com.example.scoreg.pages
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.scoreg.models.MainViewModel
 
 @Composable
 fun HomePage(modifier: Modifier = Modifier) {
+    val viewModel = viewModel<MainViewModel>();
+    val searchText by viewModel.searchText.collectAsState();
+    val games by viewModel.games.collectAsState();
+    val isSearching by viewModel.isSearching.collectAsState();
+
     Column(modifier = Modifier
         .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-
     ){
-        Text(
-            text = "Hello Buddy!",
-            fontSize = 20.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+        TextField(
+            value = searchText,
+            onValueChange = viewModel::onSearchTextChange,
+            placeholder = { Text(text = "Procure...") },
+            modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        if(isSearching){
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            this.items(games){ game ->
+                Text(
+                    text = "${game.name}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                )
+            }
+        }
     }
 }
