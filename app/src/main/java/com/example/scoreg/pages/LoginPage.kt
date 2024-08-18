@@ -28,6 +28,8 @@ import com.example.scoreg.RegisterActivity
 import com.example.scoreg.components.ClickableText
 import com.example.scoreg.components.CustomButton
 import com.example.scoreg.components.FormField
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 @Composable
 fun LoginPage(modifier: Modifier = Modifier) {
@@ -64,14 +66,18 @@ fun LoginPage(modifier: Modifier = Modifier) {
 
             CustomButton(
                 onClick = {
-                    Toast.makeText(activity, "", Toast.LENGTH_LONG).show()
-                    activity?.startActivity(
-                        Intent(activity, MainActivity::class.java).setFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        )
-                    )
-                    email = "";
-                    password = "";
+                    Firebase.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity!!) {
+                            task ->
+                        if (task.isSuccessful) {
+                            activity.startActivity( Intent(activity, MainActivity::class.java).setFlags(
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            ));
+                            Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
+                            password = ""; email = "" ;
+                        }else{
+                            Toast.makeText(activity, "Login FALHOU!", Toast.LENGTH_LONG).show()
+                        }
+                    }
             }, buttonText = "Entrar")
             
             ClickableText(
