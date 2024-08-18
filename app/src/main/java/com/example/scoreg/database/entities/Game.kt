@@ -7,4 +7,14 @@ data class Game(
     val title: String = "",
     val urlImage: String = "",
     val urlTrailer: String = ""
-)
+){
+    fun doesMatchSearchQuery(query:String): Boolean {
+        val matchingCombinations = listOf(
+            title,
+            "${title.first()}",
+        )
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+}
