@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scoreg.database.dbmanipulation.ManipulateGame
 import com.example.scoreg.database.entities.Game
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val _searchText = MutableStateFlow("")
@@ -50,10 +48,9 @@ class MainViewModel : ViewModel() {
 
     // Função para buscar os jogos do Firebase
     private fun fetchGames() {
-        viewModelScope.launch {
-            manipulateGame.fetchGames { fetchedGames ->
-                _games.update { fetchedGames }
-            }
+        manipulateGame.fetchGames { fetchedGames ->
+            // Atualiza o StateFlow _games com a lista de jogos buscada
+            _games.update { fetchedGames }
         }
     }
 

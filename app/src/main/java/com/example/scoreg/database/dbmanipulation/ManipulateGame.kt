@@ -30,27 +30,6 @@ class ManipulateGame {
         })
     }
 
-    fun fetchGames() {
-        val database = FirebaseDatabase.getInstance()
-        val gamesRef = database.getReference("games")
-
-        gamesRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val gamesList = mutableListOf<Game>()
-                for (gameSnapshot in snapshot.children) {
-                    val game = gameSnapshot.getValue(Game::class.java)
-                    game?.let { gamesList.add(it) }
-                }
-                //callback(gamesList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Trate o erro, se necessário
-                //callback(emptyList())
-            }
-        })
-    }
-
     // Retorna List com todos os Games e os ordena em ordem de mais recente
     fun fetchGamesSortedByYear(callback: (List<Game>) -> Unit) {
         val database = FirebaseDatabase.getInstance()
