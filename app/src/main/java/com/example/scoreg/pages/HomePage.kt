@@ -54,7 +54,7 @@ fun HomePage(modifier: Modifier = Modifier) {
         ) {
             this.items(games){ game ->
                 Text(
-                    text = "${game.name}",
+                    text = game.title,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
