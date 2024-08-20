@@ -22,15 +22,22 @@ class RegisterActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ScoreGTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    RegisterPage()
+
+        if(viewModel.loggedIn){
+            val intent = IntentUtils.createMainActivityIntent(this)
+            startActivity(intent);
+        }else{
+            setContent {
+                ScoreGTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        RegisterPage()
+                    }
                 }
             }
         }
+
     }
 }

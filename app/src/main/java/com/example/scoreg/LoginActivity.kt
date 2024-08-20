@@ -14,19 +14,26 @@ import com.example.scoreg.ui.theme.ScoreGTheme
 import com.weatherapp.utils.IntentUtils
 
 class LoginActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModels();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContent {
-            ScoreGTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LoginPage()
+        if(viewModel.loggedIn){
+            val intent = IntentUtils.createMainActivityIntent(this)
+            startActivity(intent);
+        }else {
+            setContent {
+                ScoreGTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        LoginPage()
+                    }
                 }
+
             }
+
         }
     }
 }

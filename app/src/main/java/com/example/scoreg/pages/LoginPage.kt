@@ -7,7 +7,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
@@ -32,7 +31,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 @Composable
-fun LoginPage(modifier: Modifier = Modifier) {
+fun LoginPage() {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val activity = LocalContext.current as? Activity
@@ -69,9 +68,7 @@ fun LoginPage(modifier: Modifier = Modifier) {
                     Firebase.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity!!) {
                             task ->
                         if (task.isSuccessful) {
-                            activity.startActivity( Intent(activity, MainActivity::class.java).setFlags(
-                                Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            ));
+                            activity.startActivity( Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                             Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
                             password = ""; email = "" ;
                         }else{

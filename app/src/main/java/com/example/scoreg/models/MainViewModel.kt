@@ -18,6 +18,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
+
+    private var _loggedIn = mutableStateOf(false)
+    val loggedIn: Boolean get() = _loggedIn.value
+    private val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        _loggedIn.value = firebaseAuth.currentUser != null
+    }
+
+//  __________________________________________________________
+
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
@@ -47,6 +56,7 @@ class MainViewModel : ViewModel() {
     private val manipulateGame = ManipulateGame()
 
     init {
+        listener.onAuthStateChanged(Firebase.auth)
         fetchGames()
     }
 
