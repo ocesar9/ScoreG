@@ -28,6 +28,7 @@ import com.example.scoreg.components.CustomButton
 import com.example.scoreg.components.FormField
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
 
 @Composable
 fun RegisterPage(modifier: Modifier = Modifier) {
@@ -69,17 +70,43 @@ fun RegisterPage(modifier: Modifier = Modifier) {
 
             CustomButton(
                 onClick = {
-                    Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity!!) {
-                            task  ->
+                    Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity!!) { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(activity,"Registro OK!", Toast.LENGTH_LONG).show();
-                            activity.finish()
-                            email = "" ; password = ""; confirmPassword = ""; name = "";
-                        }else {
-                            Toast.makeText(activity,"Registro FALHOU!", Toast.LENGTH_LONG).show();
+                            // O registro foi bem-sucedido, obtenha o usuário atual
+                            val user = Firebase.auth.currentUser
+
+                            // Verifique se o usuário não é nulo
+                            user?.let {
+                                // Obtenha o UID do usuário
+                                val userId = it.uid
+
+                                // Referência ao Realtime Database
+                                val database = Firebase.database.reference
+
+                                // Crie um objeto para armazenar os dados do usuário
+                                val userMap = hashMapOf(
+                                    "name" to name,
+                                    "email" to email
+                                )
+
+                                // Adicione o usuário à tabela "users" no Realtime Database
+                                database.child("users").child(userId).setValue(userMap).addOnCompleteListener { dbTask ->
+                                    if (dbTask.isSuccessful) {
+                                        // Sucesso ao adicionar ao Realtime Database
+                                        Toast.makeText(activity, "Registro e adição ao banco de dados OK!", Toast.LENGTH_LONG).show()
+                                        activity.finish()
+                                    } else {
+                                        // Falha ao adicionar ao Realtime Database
+                                        Toast.makeText(activity, "Falha ao adicionar ao banco de dados!", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                        } else {
+                            Toast.makeText(activity, "Registro FALHOU!", Toast.LENGTH_LONG).show()
                         }
                     }
                 }, buttonText = "Cadastrar")
+
 
             ClickableText(
                 text = "Você já possui conta? Entre",
