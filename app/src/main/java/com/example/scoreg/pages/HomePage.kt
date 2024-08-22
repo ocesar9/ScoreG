@@ -28,18 +28,7 @@ fun HomePage(modifier: Modifier = Modifier) {
     val searchText by viewModel.searchText.collectAsState();
     val games by viewModel.games.collectAsState();
     val isSearching by viewModel.isSearching.collectAsState();
-
-    // ID do usuário logado (você pode obter isso via FirebaseAuth ou mockar para teste)
-    val loggedInUserId = "K8kxtmXOhyMuJHGIc2pJ5EtiVZm1"
-    val friendId = "a1b2c3d4"
-
-    // Chame os métodos de teste ao iniciar a página
-    LaunchedEffect(Unit) {
-        viewModel.testAddFriend(loggedInUserId, friendId)
-        viewModel.testFetchAllUsersExceptLoggedIn(loggedInUserId)
-        viewModel.testFetchFriendsOfLoggedInUser(loggedInUserId)
-    }
-
+    
     Column(modifier = Modifier
         .fillMaxSize(),
     ){
