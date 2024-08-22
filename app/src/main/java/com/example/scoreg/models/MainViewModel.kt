@@ -4,10 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scoreg.database.dbmanipulation.ManipulateGame
+import com.example.scoreg.database.dbmanipulation.ManipulateUser
 import com.example.scoreg.database.entities.Game
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -72,4 +75,53 @@ class MainViewModel : ViewModel() {
     fun onSearchTextChange(text: String) {
         _searchText.value = text
     }
+
+    private val manipulateUser = ManipulateUser()
+
+    // Testa o método para adicionar um amigo
+    fun testAddFriend(loggedInUserId: String, friendId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            manipulateUser.addFriendToUser(loggedInUserId, friendId,
+                onSuccess = {
+                    println("Amigo adicionado com sucesso.")
+                },
+                onFailure = { exception ->
+                    println("Falha ao adicionar amigo: ${exception.message}")
+                }
+            )
+        }
+    }
+
+    // Testa o método para buscar todos os usuários, exceto o logado
+    fun testFetchAllUsersExceptLoggedIn(loggedInUserId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            manipulateUser.fetchAllUsersExceptLoggedInUser(loggedInUserId) { users ->
+                if (users != null) {
+                    println("Usuários encontrados: ${users.size}")
+                    users.forEach { user ->
+                        println("Usuário: ${user.name}, Email: ${user.email}")
+                    }
+                } else {
+                    println("Falha ao buscar usuários.")
+                }
+            }
+        }
+    }
+
+    // Testa o método para buscar todos os amigos do usuário logado
+    fun testFetchFriendsOfLoggedInUser(loggedInUserId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            manipulateUser.fetchFriendsOfLoggedInUser(loggedInUserId) { friends ->
+                if (friends != null) {
+                    println("Amigos encontrados: ${friends.size}")
+                    friends.forEach { friend ->
+                        println("Amigo: ${friend.name}, Email: ${friend.email}")
+                    }
+                } else {
+                    println("Falha ao buscar amigos.")
+                }
+            }
+        }
+    }
+
 }
