@@ -28,19 +28,19 @@ fun Navbar(navController: NavController) {
         NavButton(
             text = "Jogos Completados",
             icon = R.drawable.navbar_icon_1,
-            onClick = { navController.navigate("complete_games") }
+            onClick = { navController.navigate("completedGamesPage") }
         )
 
         NavButton(
             text = "Jogando Agora",
             icon = R.drawable.navbar_icon_2,
-            onClick = { navController.navigate("playing_now") }
+            onClick = { navController.navigate("playingNowPage") }
         )
 
         NavButton(
             text = "Lista de Compras",
             icon = R.drawable.navbar_icon_3,
-            onClick = { navController.navigate("wish_list") }
+            onClick = { navController.navigate("wishListPage") }
         )
     }
 }
