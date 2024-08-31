@@ -35,7 +35,7 @@ class ManipulateGame {
         val database = FirebaseDatabase.getInstance()
         val gamesRef = database.getReference("games")
 
-        gamesRef.orderByChild("release_year").addListenerForSingleValueEvent(object :
+        gamesRef.orderByChild("releaseYear").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val gamesList = mutableListOf<Game>()
