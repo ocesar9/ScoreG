@@ -40,7 +40,7 @@ fun GameButton(
         ) {
             // Image from URL
             Image(
-                painter = rememberImagePainter(game.urlImage),
+                painter = rememberImagePainter(data = game.urlImage),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
