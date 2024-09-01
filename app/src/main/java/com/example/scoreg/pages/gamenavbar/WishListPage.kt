@@ -24,8 +24,6 @@ import androidx.navigation.NavController
 import com.example.scoreg.components.GameButton
 import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 @Composable
 fun WishListPage(navController: NavController, mainViewModel: MainViewModel) {
