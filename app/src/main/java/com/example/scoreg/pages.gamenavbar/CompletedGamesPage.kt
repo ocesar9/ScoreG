@@ -13,11 +13,20 @@ import androidx.navigation.NavController
 import com.example.scoreg.components.GameButton
 import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 @Composable
 fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel) {
+    // Estado para armazenar a lista de jogos
+    var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
+
+    // Chama fetchGames e atualiza gamesList
+    LaunchedEffect(Unit) {
+        mainViewModel.fetchCurrentUserGamesList( "completedGames") { games ->
+            if (games != null) {
+                userGamesList = games
+            }
+        }
+    }
 
     // Layout da página com rolagem
     Column(
@@ -29,7 +38,7 @@ fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel
         Spacer(modifier = Modifier.height(16.dp))
 
         // LazyColumn para a lista de jogos com rolagem
-        /*
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -44,8 +53,9 @@ fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel
                 })
             }
         }
-        */
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(onClick = { navController.navigate("home") }) {
             Text(text = "Voltar para Home")
         }
