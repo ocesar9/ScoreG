@@ -19,7 +19,7 @@ fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel
     // Estado para armazenar a lista de jogos
     var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
 
-    // Chama fetchGames e atualiza gamesList
+    // Chama fetchCurrentUserGamesList e atualiza gamesList
     LaunchedEffect(Unit) {
         mainViewModel.fetchCurrentUserGamesList( "completedGames") { games ->
             if (games != null) {
@@ -50,6 +50,7 @@ fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel
             items(userGamesList) { game ->
                 GameButton(game = game, onClick = {
                     // Ação ao clicar no botão do jogo
+
                 })
             }
         }

@@ -13,6 +13,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class MainViewModel : ViewModel() {
+
+    // V Auth State  V ---------------------------------------------------------------------------
     private var _loggedIn = mutableStateOf(false)
     val loggedIn: Boolean get() = _loggedIn.value
     private val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
@@ -22,6 +24,8 @@ class MainViewModel : ViewModel() {
     init {
         listener.onAuthStateChanged(Firebase.auth)
     }
+
+    // V FB Utils V ---------------------------------------------------------------------------
 
     // Instância do FirebaseDatabase
     private val database: FirebaseDatabase by lazy {
@@ -33,25 +37,27 @@ class MainViewModel : ViewModel() {
         return database.getReference(path)
     }
 
-    // Outras funções que manipulam o banco de dados
+    fun getCurrentUserId(): String? {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        return firebaseAuth.currentUser?.uid
+    }
+
+    // V Games Table V ---------------------------------------------------------------------------
+
     fun updateGameScore(gameId: String, newScore: Int) {
         val gameRef = getDatabaseReference("games/$gameId")
         gameRef.child("score").setValue(newScore)
     }
 
-    fun getCurrentUserId(): String? {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        return firebaseAuth.currentUser?.uid
-    }
+    // V Users Table V ---------------------------------------------------------------------------
 
     // Função que retorna Lista de jogos especificada do usuário logado
     fun fetchCurrentUserGamesList(
         listType: String,
         callback: (List<Game>?) -> Unit
     ) {
-        val database = FirebaseDatabase.getInstance()
-        val userRef = getCurrentUserId()?.let { database.getReference("users").child(it).child(listType) }
-        val gamesRef = database.getReference("games")
+        val userRef = getCurrentUserId()?.let { getDatabaseReference("users").child(it).child(listType) }
+        val gamesRef = getDatabaseReference("games")
 
         if (userRef != null) {
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -86,8 +92,5 @@ class MainViewModel : ViewModel() {
             })
         }
     }
-
-
-
 
 }

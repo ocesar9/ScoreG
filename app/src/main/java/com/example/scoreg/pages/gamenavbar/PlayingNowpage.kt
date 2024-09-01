@@ -30,7 +30,7 @@ fun PlayingNowPage(navController: NavController, mainViewModel: MainViewModel) {
     // Estado para armazenar a lista de jogos
     var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
 
-    // Chama fetchGames e atualiza gamesList
+    // Chama fetchCurrentUserGamesList e atualiza gamesList
     LaunchedEffect(Unit) {
         mainViewModel.fetchCurrentUserGamesList( "playingNow") { games ->
             if (games != null) {
