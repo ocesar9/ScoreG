@@ -15,7 +15,7 @@ import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
 
 @Composable
-fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel) {
+fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewModel) {
     // Estado para armazenar a lista de jogos
     var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
 
