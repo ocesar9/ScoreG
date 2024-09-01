@@ -60,7 +60,8 @@ class MainViewModel : ViewModel() {
         val gamesRef = getDatabaseReference("games")
 
         if (userRef != null) {
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            // Adiciona um ValueEventListener contínuo
+            userRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(userSnapshot: DataSnapshot) {
                     val gameIds = userSnapshot.children.map { it.key }
                     if (gameIds.isNullOrEmpty()) {
@@ -92,5 +93,6 @@ class MainViewModel : ViewModel() {
             })
         }
     }
+
 
 }
