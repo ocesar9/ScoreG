@@ -22,7 +22,7 @@ import com.example.scoreg.components.Navbar
 import com.example.scoreg.models.MainViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.weatherapp.utils.IntentUtils
+import com.example.scoreg.utils.IntentUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

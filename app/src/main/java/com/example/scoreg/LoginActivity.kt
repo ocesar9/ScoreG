@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.example.scoreg.models.MainViewModel
 import com.example.scoreg.pages.LoginPage
 import com.example.scoreg.ui.theme.ScoreGTheme
-import com.weatherapp.utils.IntentUtils
+import com.example.scoreg.utils.IntentUtils
 
 class LoginActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels();

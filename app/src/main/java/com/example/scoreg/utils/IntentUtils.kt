@@ -1,10 +1,9 @@
-package com.weatherapp.utils
+package com.example.scoreg.utils
 
 import android.content.Context
 import android.content.Intent
 import com.example.scoreg.LoginActivity
 import com.example.scoreg.MainActivity
-
 
 object IntentUtils {
     fun createMainActivityIntent(context: Context): Intent {

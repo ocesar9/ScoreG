@@ -3,7 +3,9 @@ package com.example.scoreg.models
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.scoreg.database.entities.Game
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -15,6 +17,10 @@ class MainViewModel : ViewModel() {
     val loggedIn: Boolean get() = _loggedIn.value
     private val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
         _loggedIn.value = firebaseAuth.currentUser != null
+    }
+
+    init {
+        listener.onAuthStateChanged(Firebase.auth)
     }
 
     // Instância do FirebaseDatabase

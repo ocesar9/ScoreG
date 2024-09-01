@@ -1,13 +1,11 @@
 package com.example.scoreg
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.scoreg.models.MainViewModel
-import com.weatherapp.utils.IntentUtils
+import com.example.scoreg.utils.IntentUtils
 
 class SplashScreenActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels();
