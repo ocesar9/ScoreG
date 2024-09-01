@@ -11,33 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoreg.components.GameButton
-import com.example.scoreg.database.dbmanipulation.ManipulateUser
 import com.example.scoreg.database.entities.Game
+import com.example.scoreg.models.MainViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 @Composable
-fun CompleteGamesPage(navController: NavController) {
-    val manipulateUser = ManipulateUser()
-
-    // Estado para armazenar a lista de jogos
-    var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
-
-    // Identificar usuário logado
-    val firebaseAuth = FirebaseAuth.getInstance()
-
-    val currentUser = firebaseAuth.currentUser
-
-    // Salvando o UID do usuário logado em uma string
-    val userId: String = currentUser!!.uid
-
-    // Chama fetchGames e atualiza gamesList
-    LaunchedEffect(Unit) {
-        manipulateUser.fetchUserGamesList(userId, "completedGames") { games ->
-            if (games != null) {
-                userGamesList = games
-            }
-        }
-    }
+fun CompleteGamesPage(navController: NavController, mainViewModel: MainViewModel) {
 
     // Layout da página com rolagem
     Column(
@@ -49,6 +29,7 @@ fun CompleteGamesPage(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // LazyColumn para a lista de jogos com rolagem
+        /*
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +44,7 @@ fun CompleteGamesPage(navController: NavController) {
                 })
             }
         }
-
+        */
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { navController.navigate("home") }) {
             Text(text = "Voltar para Home")
