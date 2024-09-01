@@ -15,13 +15,13 @@ import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
 
 @Composable
-fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewModel) {
+fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewModel, userListName: String) {
     // Estado para armazenar a lista de jogos
     var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
 
     // Chama fetchCurrentUserGamesList e atualiza gamesList
     LaunchedEffect(Unit) {
-        mainViewModel.fetchCurrentUserGamesList( "completedGames") { games ->
+        mainViewModel.fetchCurrentUserGamesList( userListName) { games ->
             if (games != null) {
                 userGamesList = games
             }

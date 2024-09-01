@@ -53,10 +53,10 @@ class MainViewModel : ViewModel() {
 
     // Função que retorna Lista de jogos especificada do usuário logado
     fun fetchCurrentUserGamesList(
-        listType: String,
+        userListName: String,
         callback: (List<Game>?) -> Unit
     ) {
-        val userRef = getCurrentUserId()?.let { getDatabaseReference("users").child(it).child(listType) }
+        val userRef = getCurrentUserId()?.let { getDatabaseReference("users").child(it).child(userListName) }
         val gamesRef = getDatabaseReference("games")
 
         if (userRef != null) {
