@@ -11,20 +11,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoreg.components.GameButton
-import com.example.scoreg.database.dbmanipulation.ManipulateGame
+import com.example.scoreg.database.dbmanipulation.ManipulateUser
 import com.example.scoreg.database.entities.Game
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun CompleteGamesPage(navController: NavController) {
-    val manipulateGame = ManipulateGame()
+    val manipulateUser = ManipulateUser()
 
     // Estado para armazenar a lista de jogos
-    var gamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
+    var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
+
+    // Identificar usuário logado
+    val firebaseAuth = FirebaseAuth.getInstance()
+
+    val currentUser = firebaseAuth.currentUser
+
+    // Salvando o UID do usuário logado em uma string
+    val userId: String = currentUser!!.uid
 
     // Chama fetchGames e atualiza gamesList
     LaunchedEffect(Unit) {
-        manipulateGame.fetchGames { games ->
-            gamesList = games
+        manipulateUser.fetchUserGamesList(userId, "completedGames") { games ->
+            if (games != null) {
+                userGamesList = games
+            }
         }
     }
 
@@ -46,7 +57,7 @@ fun CompleteGamesPage(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp) // Espaçamento entre os itens
         ) {
-            items(gamesList) { game ->
+            items(userGamesList) { game ->
                 GameButton(game = game, onClick = {
                     // Ação ao clicar no botão do jogo
                 })
