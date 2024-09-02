@@ -93,47 +93,61 @@ class MainViewModel : ViewModel() {
 
     // V Users Table V ---------------------------------------------------------------------------
 
-    // Função que retorna Lista de jogos especificada do usuário logado
-    fun fetchCurrentUserGamesList(
-        userListName: String,
-        callback: (List<Game>?) -> Unit
-    ) {
-        val userRef = getCurrentUserId()?.let { getDatabaseReference("users").child(it).child(userListName) }
+    var currentUserCompletedGamesList = mutableStateOf<List<Game>>(listOf())
+        private set
+
+    var currentUserPlayingNowList = mutableStateOf<List<Game>>(listOf())
+        private set
+
+    var currentUserWishList = mutableStateOf<List<Game>>(listOf())
+        private set
+
+    // Função para atualizar a Game list de jogos de acordo com o nome da lista do usuário logado
+    fun fetchCurrentUserGameList(listName: String) {
+        val currentUserId = getCurrentUserId()
+        val userRef = getDatabaseReference("users/$currentUserId/$listName")
         val gamesRef = getDatabaseReference("games")
 
-        if (userRef != null) {
-            // Adiciona um ValueEventListener contínuo
-            userRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(userSnapshot: DataSnapshot) {
-                    val gameIds = userSnapshot.children.map { it.key }
-                    if (gameIds.isNullOrEmpty()) {
-                        callback(emptyList())
-                        return
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(userSnapshot: DataSnapshot) {
+                val completedGameIds = userSnapshot.children.mapNotNull { it.key }
+
+                val completedGamesListTemp = mutableListOf<Game>()
+
+                gamesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(gamesSnapshot: DataSnapshot) {
+                        for (gameSnapshot in gamesSnapshot.children) {
+                            val gameId = gameSnapshot.key
+                            val game = gameSnapshot.getValue(Game::class.java)
+
+                            if (gameId != null && gameId in completedGameIds && game != null) {
+                                val gameWithId = game.copy(id = gameId)
+                                completedGamesListTemp.add(gameWithId)
+                            }
+                        }
+
+                        if (listName == "completedGames") {
+                            currentUserCompletedGamesList.value = completedGamesListTemp
+                        }
+                        else if (listName == "playingNow") {
+                            currentUserPlayingNowList.value = completedGamesListTemp
+                        }
+                        else if (listName == "wishList") {
+                            currentUserWishList.value = completedGamesListTemp
+                        }
+
                     }
 
-                    gamesRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(gameSnapshot: DataSnapshot) {
-                            val gamesList = mutableListOf<Game>()
-                            gameIds.forEach { gameId ->
-                                val game = gameSnapshot.child(gameId!!).getValue(Game::class.java)
-                                if (game != null) {
-                                    gamesList.add(game)
-                                }
-                            }
-                            callback(gamesList)
-                        }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // Lida com erros, se necessário
+                    }
+                })
+            }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            callback(null)
-                        }
-                    })
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    callback(null)
-                }
-            })
-        }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Lida com erros, se necessário
+            }
+        })
     }
 
 

@@ -28,16 +28,7 @@ import com.example.scoreg.models.MainViewModel
 @Composable
 fun WishListPage(navController: NavController, mainViewModel: MainViewModel, userListName: String) {
     // Estado para armazenar a lista de jogos
-    var userGamesList by remember { mutableStateOf<List<Game>>(emptyList()) }
-
-    // Chama fetchCurrentUserGamesList e atualiza gamesList
-    LaunchedEffect(Unit) {
-        mainViewModel.fetchCurrentUserGamesList( userListName) { games ->
-            if (games != null) {
-                userGamesList = games
-            }
-        }
-    }
+    mainViewModel.fetchCurrentUserGameList(userListName)
 
     // Layout da página com rolagem
     Column(
@@ -58,7 +49,7 @@ fun WishListPage(navController: NavController, mainViewModel: MainViewModel, use
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp) // Espaçamento entre os itens
         ) {
-            items(userGamesList) { game ->
+            items(mainViewModel.currentUserWishList.value.toList()) { game ->
                 GameButton(game = game, onClick = {
                     // Ação ao clicar no botão do jogo
                 })
