@@ -101,6 +101,7 @@ fun HomePage(navController: NavController, mainViewModel: MainViewModel, modifie
                 GameCard(game = game)
             }
         }
+
     }
 }
 

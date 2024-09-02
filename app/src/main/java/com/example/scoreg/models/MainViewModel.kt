@@ -157,7 +157,21 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    // Função para adicionar o ID do jogo na lista de jogos do usuário logado
+    fun addGameToCurrentUserList(gameId: String, listName: String) {
+        val userId = getCurrentUserId()
+        val userGameListRef = getDatabaseReference("users/$userId/$listName/$gameId")
 
-
+        // Define o valor true para o gameId na lista do usuário
+        userGameListRef.setValue(true).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sucesso ao adicionar o jogo na lista
+                println("Jogo adicionado com sucesso na lista $listName")
+            } else {
+                // Falha ao adicionar o jogo na lista
+                println("Erro ao adicionar jogo na lista $listName: ${task.exception?.message}")
+            }
+        }
+    }
 
 }

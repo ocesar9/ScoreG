@@ -16,6 +16,7 @@ fun GameInfoPage(navController: NavController, mainViewModel: MainViewModel) {
 
     /* TODO:
         - criar botão que envie o currentGame.id como parâmetro para a função que adicone ou remova o jogo de alguma lista
+            mainViewModel.addGameToCurrentUserList(mainViewModel.currentGame.id, PasseAStringDeNomeDaListaAqui)
         - criar alguma validação validação para saber se o jogo já está em:
         - Listas:
             mainViewModel.currentUserCompletedGamesList
