@@ -1,6 +1,7 @@
 package com.example.scoreg.database.entities
 
 data class Game(
+    val id: String = "",
     val description: String = "",
     val releaseYear: Int = 0,
     val score: Int = 0,

@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoreg.components.Navbar
+import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -27,18 +31,14 @@ import com.example.scoreg.utils.IntentUtils
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(navController: NavController, mainViewModel: MainViewModel, modifier: Modifier = Modifier) {
-    //val viewModel = viewModel<MainViewModel>();
-    //val searchText by viewModel.searchText.collectAsState();
-    //val games by viewModel.games.collectAsState();
-    //val isSearching by viewModel.isSearching.collectAsState();
 
-    val context = LocalContext.current // Obtenha o contexto
+    mainViewModel.fetchAndSortGames()
 
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
             .fillMaxSize()
-
     ) {
         TopAppBar(
             title = { /*TODO*/ },
@@ -68,40 +68,45 @@ fun HomePage(navController: NavController, mainViewModel: MainViewModel, modifie
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-    }
+        Spacer(modifier = Modifier.height(16.dp))
 
-//    Column(modifier = Modifier
-//        .fillMaxSize(),
-//    ){
-//        TextField(
-//            value = searchText,
-//            onValueChange = viewModel::onSearchTextChange,
-//            placeholder = { Text(text = "Procure...") },
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//        Spacer(modifier = Modifier.height(16.dp))
-//        if(isSearching){
-//            Box(
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                CircularProgressIndicator(
-//                    modifier = Modifier.align(Alignment.Center)
-//                )
-//            }
-//        }
-//        LazyColumn(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .weight(1f)
-//        ) {
-//            this.items(games){ game ->
-//                Text(
-//                    text = game.title,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(vertical = 16.dp)
-//                )
-//            }
-//        }
-//    }
+        // Exibir lista de jogos ordenados por score
+        Text(
+            text = "Jogos Ordenados por Pontuação",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
+            items(mainViewModel.gamesSortedByScore.value.toList()) { game ->
+                GameCard(game = game)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Exibir lista de jogos ordenados por ano de lançamento
+        Text(
+            text = "Jogos Ordenados por Ano de Lançamento",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
+            items(mainViewModel.gamesSortedByReleaseYear.value.toList()) { game ->
+                GameCard(game = game)
+            }
+        }
+    }
+}
+
+@Composable
+fun GameCard(game: Game, modifier: Modifier = Modifier) {
+    // Implemente o componente visual para exibir as informações do jogo
+    Text(text = "${game.title} / ", style = MaterialTheme.typography.bodyMedium)
+    // Adicione outros elementos visuais conforme necessário (imagem, pontuação, etc.)
 }

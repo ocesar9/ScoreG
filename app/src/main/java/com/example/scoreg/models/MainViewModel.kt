@@ -49,6 +49,48 @@ class MainViewModel : ViewModel() {
         gameRef.child("score").setValue(newScore)
     }
 
+    // Listas observáveis para armazenar os jogos ordenados por score e releaseYear
+    var gamesSortedByScore = mutableStateOf<List<Game>>(listOf())
+        private set
+
+    var gamesSortedByReleaseYear = mutableStateOf<List<Game>>(listOf())
+        private set
+
+    fun fetchAndSortGames() {
+        val gamesRef = getDatabaseReference("games")
+
+        // Listener para escutar mudanças no nó "games"
+        gamesRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val gamesList = mutableListOf<Game>()
+
+                // Itera sobre todos os jogos no banco de dados
+                for (gameSnapshot in dataSnapshot.children) {
+                    val gameId = gameSnapshot.key // Obtém o ID único do jogo
+                    val game = gameSnapshot.getValue(Game::class.java)
+
+                    if (game != null && gameId != null) {
+                        // Define o ID do jogo
+                        val gameWithId = game.copy(id = gameId)
+                        gamesList.add(gameWithId)
+                    }
+                }
+
+                // Ordena as listas
+                val sortedByScore = gamesList.sortedByDescending { it.score }
+                val sortedByReleaseYear = gamesList.sortedByDescending { it.releaseYear }
+
+                // Atualiza as listas observáveis
+                gamesSortedByScore.value = sortedByScore
+                gamesSortedByReleaseYear.value = sortedByReleaseYear
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Lida com erros, se necessário
+            }
+        })
+    }
+
     // V Users Table V ---------------------------------------------------------------------------
 
     // Função que retorna Lista de jogos especificada do usuário logado
