@@ -91,6 +91,13 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    lateinit var currentGame: Game
+        private set
+
+    fun setCurrentGame(currentGameTemp: Game) {
+        currentGame = currentGameTemp
+    }
+
     // V Users Table V ---------------------------------------------------------------------------
 
     var currentUserCompletedGamesList = mutableStateOf<List<Game>>(listOf())
@@ -149,6 +156,8 @@ class MainViewModel : ViewModel() {
             }
         })
     }
+
+
 
 
 }

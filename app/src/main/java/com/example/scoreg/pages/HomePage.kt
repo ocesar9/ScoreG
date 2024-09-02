@@ -106,7 +106,10 @@ fun HomePage(navController: NavController, mainViewModel: MainViewModel, modifie
 
 @Composable
 fun GameCard(game: Game, modifier: Modifier = Modifier) {
-    // Implemente o componente visual para exibir as informações do jogo
     Text(text = "${game.title} / ", style = MaterialTheme.typography.bodyMedium)
-    // Adicione outros elementos visuais conforme necessário (imagem, pontuação, etc.)
+    /* TODO
+            crie um botão que leve para a tela unificada de informação de um jogo em questão e use as funções abaixo:
+                mainViewModel.setCurrentGame(game)
+                navController.navigate(("gameInfoPage"))
+     */
 }

@@ -41,7 +41,8 @@ fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewMode
             items(mainViewModel.currentUserCompletedGamesList.value.toList()) { game ->
                 GameButton(game = game, onClick = {
                     // Ação ao clicar no botão do jogo
-
+                    mainViewModel.setCurrentGame(game)
+                    navController.navigate(("gameInfoPage"))
                 })
             }
         }
