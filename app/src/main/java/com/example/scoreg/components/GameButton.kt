@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.scoreg.database.entities.Game
+import coil.compose.rememberImagePainter
+
 
 @Composable
 fun GameButton(
@@ -27,49 +29,61 @@ fun GameButton(
 ) {
     Box(
         modifier = Modifier
-            .aspectRatio(3f / 4f)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .size(width = 136.dp, height = 171.dp)
+            .clip(RoundedCornerShape(8.dp))
             .clickable(onClick = onClick)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(8.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(8.dp))
         ) {
-            // Image from URL
             Image(
                 painter = rememberImagePainter(data = game.urlImage),
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.7f)
-                    .clip(RoundedCornerShape(12.dp)),
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            // Game Title
-            Text(
-                text = game.title,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            // Overlay Box for title and score
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)) // Rounded bottom corners
+                    .padding(8.dp)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    // Game Title
+                    Text(
+                        text = game.title,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp,
+                            color = Color.White,
+                            lineHeight = 12.sp
+                        ),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-            // Game Score
-            Text(
-                text = "Score: ${game.score}",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+                    // Game Score
+                    Text(
+                        text = "Score: ${game.score}",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 10.sp,
+                            color = Color(0xFF25F396)
+                        ),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 }
+

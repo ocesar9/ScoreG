@@ -56,6 +56,7 @@ fun GameCard(
                     .align(Alignment.BottomCenter)
                     .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
                     .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(8.dp)
             ) {
                 Text(
                     text = game.title,

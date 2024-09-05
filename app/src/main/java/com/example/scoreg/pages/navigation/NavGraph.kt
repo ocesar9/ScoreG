@@ -13,6 +13,7 @@ import com.example.scoreg.pages.gamenavbar.WishListPage
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, mainViewModel: MainViewModel) {
+
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { HomePage(navController = navController, mainViewModel = mainViewModel) }
         composable("completedGamesPage") { CompletedGamesPage(navController = navController, mainViewModel = mainViewModel, userListName = "completedGames") }

@@ -11,11 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoreg.components.GameButton
+import com.example.scoreg.components.GameGrid
 import com.example.scoreg.database.entities.Game
 import com.example.scoreg.models.MainViewModel
 
 @Composable
-fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewModel, userListName: String) {
+fun CompletedGamesPage(
+    navController: NavController,
+    mainViewModel: MainViewModel,
+    userListName: String,
+
+) {
     // Estado para armazenar a lista de jogos
     mainViewModel.fetchCurrentUserGameList(userListName)
 
@@ -28,29 +34,10 @@ fun CompletedGamesPage(navController: NavController, mainViewModel: MainViewMode
         Text(text = "Jogos Completados")
         Spacer(modifier = Modifier.height(16.dp))
 
-        // LazyColumn para a lista de jogos com rolagem
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)  // Isso faz a coluna ocupar o máximo de altura disponível
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp) // Espaçamento entre os itens
-        ) {
-            items(mainViewModel.currentUserCompletedGamesList.value.toList()) { game ->
-                GameButton(game = game, onClick = {
-                    // Ação ao clicar no botão do jogo
-                    mainViewModel.setCurrentGame(game)
-                    navController.navigate(("gameInfoPage"))
-                })
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = { navController.navigate("home") }) {
-            Text(text = "Voltar para Home")
-        }
+        GameGrid(
+            games = mainViewModel.currentUserCompletedGamesList.value.toList(),
+            mainViewModel = mainViewModel,
+            navController = navController
+        )
     }
 }
