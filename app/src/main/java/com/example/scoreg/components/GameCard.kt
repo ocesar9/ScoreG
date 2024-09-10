@@ -2,7 +2,9 @@ package com.example.scoreg.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,12 +29,15 @@ import coil.compose.rememberImagePainter
 @Composable
 fun GameCard(
     game: Game,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    showScore: Boolean = false
 ) {
     Box(
         modifier = modifier
             .size(width = 136.dp, height = 171.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
             .background(MaterialTheme.colorScheme.surface)
             .padding(8.dp)
     ) {
@@ -58,17 +63,32 @@ fun GameCard(
                     .background(Color.Black.copy(alpha = 0.5f))
                     .padding(8.dp)
             ) {
-                Text(
-                    text = game.title,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 10.sp,
-                        color = Color.White,
-                        lineHeight = 12.sp
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = game.title,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp,
+                            color = Color.White,
+                            lineHeight = 12.sp
+                        ),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    if (showScore) {
+                        Text(
+                            text = "Score: ${game.score}",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 10.sp,
+                                color = Color(0xFF25F396)
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(top = 4.dp)
+                        )
+                    }
+                }
             }
         }
     }

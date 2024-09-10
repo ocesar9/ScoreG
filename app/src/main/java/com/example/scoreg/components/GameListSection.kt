@@ -12,13 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.scoreg.database.entities.Game
+import com.example.scoreg.models.MainViewModel
 
 @Composable
 fun GameListSection(
     title: String,
     games: List<Game>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel,
+    navController: NavController
 ) {
     Column(modifier = modifier) {
         Text(
@@ -34,7 +38,12 @@ fun GameListSection(
             items(games) { game ->
                 GameCard(
                     game = game,
-                    modifier = modifier
+                    modifier = modifier,
+                    onClick = {
+                        mainViewModel.setCurrentGame(game)
+                        navController.navigate("gameInfoPage")
+                    },
+                    showScore = true
                 )
             }
         }

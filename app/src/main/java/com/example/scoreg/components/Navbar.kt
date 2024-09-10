@@ -22,6 +22,7 @@ fun Navbar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .wrapContentHeight()
             .background(Color(0xFF25F396)),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -38,7 +39,7 @@ fun Navbar(navController: NavController) {
         )
 
         NavButton(
-            text = "Lista de Compras",
+            text = "Lista de Desejos",
             icon = R.drawable.navbar_icon_3,
             onClick = { navController.navigate("wishListPage") }
         )
