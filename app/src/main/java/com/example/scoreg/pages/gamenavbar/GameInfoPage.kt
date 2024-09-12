@@ -1,27 +1,62 @@
 package com.example.scoreg.pages.gamenavbar
 
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.scoreg.components.ActionButtons
+import com.example.scoreg.components.CustomTopAppBar
+import com.example.scoreg.components.GameListSection
+import com.example.scoreg.components.GameView
 import com.example.scoreg.models.MainViewModel
 
+
 @Composable
-fun GameInfoPage(navController: NavController, mainViewModel: MainViewModel) {
+fun GameInfoPage(
+    navController: NavController,
+    mainViewModel: MainViewModel,
+) {
+    mainViewModel.fetchAndSortGames()
 
-    // Página que detalha todos os dados do jogo clicado independente da tela anterior
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CustomTopAppBar(
+                showBackButton = true,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
 
-    Text(text = mainViewModel.currentGame.id)
-    Text(text = mainViewModel.currentGame.title)
-    Text(text = mainViewModel.currentGame.description)
+            GameView(game = mainViewModel.currentGame,)
 
-    /* TODO:
-        - criar botão que envie o currentGame.id como parâmetro para a função que adicone ou remova o jogo de alguma lista
-            mainViewModel.addGameToCurrentUserList(mainViewModel.currentGame.id, PasseAStringDeNomeDaListaAqui)
-        - criar alguma validação validação para saber se o jogo já está em:
-        - Listas:
-            mainViewModel.currentUserCompletedGamesList
-            mainViewModel.currentUserPlayingNowList
-            mainViewModel.currentUserWishList
-    */
+            // Adicionando a Row com os botões abaixo do GameView
+            ActionButtons(
+                onAddToCompleted = {  },
+                onAddToPlaying = {  },
+                onAddToWishlist = {  },
+            )
+        }
 
+        Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+
+            ) {
+                GameListSection(
+                    title = "Mais Populares",
+                    games = mainViewModel.gamesSortedByScore.value.toList(),
+                    mainViewModel = mainViewModel,
+                    navController = navController
+                )
+            }
+        }
 }

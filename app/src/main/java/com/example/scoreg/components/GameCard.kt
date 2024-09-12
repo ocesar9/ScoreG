@@ -55,6 +55,32 @@ fun GameCard(
                 contentScale = ContentScale.Crop
             )
 
+            if (showScore) {
+                val scoreColor = when {
+                    game.score <= 50 -> Color(0xFFFF6874)
+                    game.score in 60..75 -> Color(0xFFFFBD3F)
+                    game.score in 76..100 -> Color(0xFF25F396)
+                    else -> Color.Gray
+                }
+
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .background(scoreColor, RoundedCornerShape(4.dp))
+                        .align(Alignment.TopEnd),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${game.score}",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 10.sp,
+                            color = Color.White
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -75,19 +101,6 @@ fun GameCard(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
-
-                    if (showScore) {
-                        Text(
-                            text = "Score: ${game.score}",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 10.sp,
-                                color = Color(0xFF25F396)
-                            ),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(top = 4.dp)
-                        )
-                    }
                 }
             }
         }
