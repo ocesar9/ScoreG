@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener
 
 class MainViewModel : ViewModel() {
 
+
+
     // V Auth State  V ---------------------------------------------------------------------------
     private var _loggedIn = mutableStateOf(false)
     val loggedIn: Boolean get() = _loggedIn.value
@@ -33,11 +35,11 @@ class MainViewModel : ViewModel() {
     }
 
     // Retorna a referência para um caminho específico no Realtime Database
-    fun getDatabaseReference(path: String): DatabaseReference {
+    private fun getDatabaseReference(path: String): DatabaseReference {
         return database.getReference(path)
     }
 
-    fun getCurrentUserId(): String? {
+    private fun getCurrentUserId(): String? {
         val firebaseAuth = FirebaseAuth.getInstance()
         return firebaseAuth.currentUser?.uid
     }
@@ -157,21 +159,61 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    // Função para adicionar o ID do jogo na lista de jogos do usuário logado
-    fun addGameToCurrentUserList(gameId: String, listName: String) {
-        val userId = getCurrentUserId()
-        val userGameListRef = getDatabaseReference("users/$userId/$listName/$gameId")
-
-        // Define o valor true para o gameId na lista do usuário
-        userGameListRef.setValue(true).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sucesso ao adicionar o jogo na lista
-                println("Jogo adicionado com sucesso na lista $listName")
-            } else {
-                // Falha ao adicionar o jogo na lista
-                println("Erro ao adicionar jogo na lista $listName: ${task.exception?.message}")
-            }
+    private fun convertListNameToFBRefName(listName: String): String {
+        val listNamePretty = when (listName) {
+            "completedGames" -> "lista Jogos Completados"
+            "playingNow" -> "lista Jogando Agora"
+            "wishList" -> "Lista de Compras"
+            else -> "Tem isso não!"
         }
+
+        return listNamePretty
+
+    }
+
+    // Função conferir se o jogo faz parte de alguma lista e adiciona o ID do jogo na lista de jogos do usuário logado
+    fun addGameToCurrentUserListWithCheck(listName: String, callback: (String) -> Unit) {
+        val userId = getCurrentUserId()
+        val userRef = getDatabaseReference("users/$userId")
+        val listNamePretty = convertListNameToFBRefName(listName)
+
+        // Listener para pegar todas as listas de jogos do usuário
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val completedGames = dataSnapshot.child("completedGames").children.mapNotNull { it.key }
+                val playingNow = dataSnapshot.child("playingNow").children.mapNotNull { it.key }
+                val wishList = dataSnapshot.child("wishList").children.mapNotNull { it.key }
+
+                // Verifica se o jogo já pertence a alguma lista
+                when (currentGame.id) {
+                    in completedGames -> {
+                        callback("O jogo já está na lista 'Jogos Completados'")
+                    }
+                    in playingNow -> {
+                        callback("O jogo já está na lista 'Jogando Agora'")
+                    }
+                    in wishList -> {
+                        callback("O jogo já está na 'Lista de Compras'")
+                    }
+                    else -> {
+                        // Adiciona o jogo à lista especificada
+                        val userGameListRef: DatabaseReference = userRef.child(listName).child(currentGame.id)
+                        userGameListRef.setValue(true).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                callback("Jogo adicionado com sucesso à $listNamePretty")
+                            } else {
+                                callback("Erro ao adicionar jogo à $listNamePretty")
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Retorna erro
+                callback("Erro ao acessar o banco de dados")
+            }
+        })
     }
 
 }
