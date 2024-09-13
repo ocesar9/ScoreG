@@ -57,7 +57,7 @@ fun GameCard(
 
             if (showScore) {
                 val scoreColor = when {
-                    game.score <= 50 -> Color(0xFFFF6874)
+                    game.score <= 60 -> Color(0xFFFF6874)
                     game.score in 60..75 -> Color(0xFFFFBD3F)
                     game.score in 76..100 -> Color(0xFF25F396)
                     else -> Color.Gray
