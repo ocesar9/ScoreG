@@ -32,7 +32,7 @@ fun WishListPage(
         )
 
         GameGrid(
-            title = "Lista de Desejos",
+            title = "Lista de Compras",
             games = mainViewModel.currentUserWishList.value.toList(),
             mainViewModel = mainViewModel,
             navController = navController

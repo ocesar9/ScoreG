@@ -35,7 +35,7 @@ fun CompletedGamesPage(
         )
 
         GameGrid(
-            title = "Jogos Completos",
+            title = "Jogos Completados",
             games = mainViewModel.currentUserCompletedGamesList.value.toList(),
             mainViewModel = mainViewModel,
             navController = navController
