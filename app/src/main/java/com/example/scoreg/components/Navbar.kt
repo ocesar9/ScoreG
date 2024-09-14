@@ -39,7 +39,7 @@ fun Navbar(navController: NavController) {
         )
 
         NavButton(
-            text = "Lista de Desejos",
+            text = "Lista de Compras",
             icon = R.drawable.navbar_icon_3,
             onClick = { navController.navigate("wishListPage") }
         )
