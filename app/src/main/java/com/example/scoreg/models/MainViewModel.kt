@@ -98,7 +98,28 @@ class MainViewModel : ViewModel() {
 
     fun setCurrentGame(currentGameTemp: Game) {
         currentGame = currentGameTemp
+        observeGameUpdates(currentGame.id)
     }
+
+
+    fun observeGameUpdates(gameId: String) {
+        val gameRef = getDatabaseReference("games/$gameId")
+
+        gameRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val game = dataSnapshot.getValue(Game::class.java)
+                if (game != null) {
+                    // Atualiza o currentGame com o jogo atualizado do Firebase
+                    currentGame = game.copy(id = gameId)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Lida com erros, se necessário
+            }
+        })
+    }
+
 
     // V Users Table V ---------------------------------------------------------------------------
 
