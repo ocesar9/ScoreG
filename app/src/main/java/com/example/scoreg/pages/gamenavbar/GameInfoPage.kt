@@ -40,7 +40,7 @@ fun GameInfoPage(
             CustomTopAppBar(
                 showBackButton = true,
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigate("home")
                 }
             )
 
