@@ -161,8 +161,8 @@ class MainViewModel : ViewModel() {
 
     private fun convertListNameToFBRefName(listName: String): String {
         val listNamePretty = when (listName) {
-            "completedGames" -> "lista Jogos Completados"
-            "playingNow" -> "lista Jogando Agora"
+            "completedGames" -> "Jogos Completados"
+            "playingNow" -> "Jogando Agora"
             "wishList" -> "Lista de Compras"
             else -> "Tem isso não!"
         }
@@ -200,9 +200,9 @@ class MainViewModel : ViewModel() {
                         val userGameListRef: DatabaseReference = userRef.child(listName).child(currentGame.id)
                         userGameListRef.setValue(true).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                callback("Jogo adicionado com sucesso à $listNamePretty")
+                                callback("Jogo adicionado com sucesso à lista $listNamePretty")
                             } else {
-                                callback("Erro ao adicionar jogo à $listNamePretty")
+                                callback("Erro ao adicionar jogo à lista $listNamePretty")
                             }
                         }
                     }
