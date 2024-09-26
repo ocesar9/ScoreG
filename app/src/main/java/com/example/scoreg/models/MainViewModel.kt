@@ -96,11 +96,66 @@ class MainViewModel : ViewModel() {
     lateinit var currentGame: Game
         private set
 
+    // Atualiza o currentGame e busca a lista do usuário logado onde o game está
     fun setCurrentGame(currentGameTemp: Game) {
         currentGame = currentGameTemp
-        observeGameUpdates(currentGame.id)
+        observeGameUpdates(currentGame.id)    // Continua observando mudanças no jogo
     }
 
+    // Variável que representa a lista atual onde o jogo está
+    var currentGameList = mutableStateOf<String>("")
+
+    // Função para atualizar currentGameList baseado no currentGame.id
+    private fun updateCurrentGameListBasedOnCurrentGame() {
+        if (::currentGame.isInitialized) {
+            val gameId = currentGame.id // Assume que currentGame tem uma propriedade 'id'
+            if (gameId != null) {
+                updateCurrentGameList(gameId)
+            } else {
+                currentGameList.value = ""
+            }
+        } else {
+            currentGameList.value = ""
+        }
+    }
+
+    // Função que verifica em qual lista do usuário o currentGame está e atualiza currentGameList
+    private fun updateCurrentGameList(gameId: String) {
+        val currentUserId = getCurrentUserId()
+        if (currentUserId != null) {
+            val userRef = getDatabaseReference("users/$currentUserId")
+
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Listas de IDs dos jogos do usuário logado
+                    val completedGames = dataSnapshot.child("completedGames").children.mapNotNull { it.key }
+                    val playingNowGames = dataSnapshot.child("playingNow").children.mapNotNull { it.key }
+                    val wishListGames = dataSnapshot.child("wishList").children.mapNotNull { it.key }
+
+                    // Atualiza o currentGameList com o nome da lista onde o jogo foi encontrado
+                    when (gameId) {
+                        in completedGames -> {
+                            currentGameList.value = "completedGames"
+                        }
+                        in playingNowGames -> {
+                            currentGameList.value = "playingNow"
+                        }
+                        in wishListGames -> {
+                            currentGameList.value = "wishList"
+                        }
+                        else -> {
+                            // O jogo não está em nenhuma lista do usuário
+                            currentGameList.value = ""
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Lida com erros, se necessário
+                }
+            })
+        }
+    }
 
     fun observeGameUpdates(gameId: String) {
         val gameRef = getDatabaseReference("games/$gameId")
@@ -236,5 +291,46 @@ class MainViewModel : ViewModel() {
             }
         })
     }
+
+    fun addGameToCurrentUserList(listName: String) {
+        val currentUserId = getCurrentUserId()
+        if (currentUserId != null) {
+            // Referência ao caminho da lista específica no banco de dados (completedGames, playingNow ou wishList)
+            val listRef = getDatabaseReference("users/$currentUserId/$listName/${currentGame.id}")
+
+            // Define o valor como 'true' para indicar que o game está na lista
+            listRef.setValue(true).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    println("Jogo adicionado à lista $listName com sucesso!")
+                    currentGameList.value = listName
+                } else {
+                    println("Falha ao adicionar jogo à lista: ${task.exception?.message}")
+                }
+            }
+        } else {
+            println("Usuário não está logado!")
+        }
+    }
+
+    fun removeGameToCurrentUserList(listName: String) {
+        val currentUserId = getCurrentUserId()
+        if (currentUserId != null) {
+            // Referência ao caminho da lista específica no banco de dados
+            val listRef = getDatabaseReference("users/$currentUserId/$listName/${currentGame.id}")
+
+            // Remove o jogo da lista
+            listRef.removeValue().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    println("Jogo removido da lista $listName com sucesso!")
+                    currentGameList.value = ""
+                } else {
+                    println("Falha ao remover jogo da lista: ${task.exception?.message}")
+                }
+            }
+        } else {
+            println("Usuário não está logado!")
+        }
+    }
+
 
 }

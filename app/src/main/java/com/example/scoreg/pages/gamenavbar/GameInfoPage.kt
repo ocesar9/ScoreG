@@ -49,26 +49,66 @@ fun GameInfoPage(
             // Adicionando a Row com os botões abaixo do GameView
             ActionButtons(
                 onAddToCompleted = {
-                    if (activity != null) {
-                        mainViewModel.addGameToCurrentUserListWithCheck("completedGames") { result ->
-                            resultMessage = result
-                            Toast.makeText(activity, resultMessage, Toast.LENGTH_SHORT).show()
+                    mainViewModel.addGameToCurrentUserList("completedGames")
+                    when (mainViewModel.currentGameList.value) {
+                        "completedGames" -> {
+                            mainViewModel.removeGameToCurrentUserList("completedGames")
+                            Toast.makeText(activity, "Jogo removido da lista 'Jogos Completados'.", Toast.LENGTH_SHORT).show()
+                        }
+                        "playingNow" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Jogando Agora' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "wishList" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Lista de Desejos' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "" -> {
+                            mainViewModel.addGameToCurrentUserList("completedGames")
+                            Toast.makeText(activity, "Jogo adicionado à lista 'Jogos Completados'.", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // Caso não tratado, pode adicionar lógica extra se necessário
                         }
                     }
                 },
                 onAddToPlaying = {
-                    if (activity != null) {
-                        mainViewModel.addGameToCurrentUserListWithCheck("playingNow") { result ->
-                            resultMessage = result
-                            Toast.makeText(activity, resultMessage, Toast.LENGTH_SHORT).show()
+                    when (mainViewModel.currentGameList.value) {
+                        "completedGames" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Jogos Completados' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "playingNow" -> {
+                            mainViewModel.removeGameToCurrentUserList("playingNow")
+                            Toast.makeText(activity, "Jogo removido da lista 'Jogando Agora'.", Toast.LENGTH_SHORT).show()
+                        }
+                        "wishList" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Jogando Agora' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "" -> {
+                            mainViewModel.addGameToCurrentUserList("playingNow")
+                            Toast.makeText(activity, "Jogo adiconado à lista 'Jogando Agora'.", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // Caso não tratado, pode adicionar lógica extra se necessário
                         }
                     }
                 },
                 onAddToWishlist = {
-                    if (activity != null) {
-                        mainViewModel.addGameToCurrentUserListWithCheck("wishList") { result ->
-                            resultMessage = result
-                            Toast.makeText(activity, resultMessage, Toast.LENGTH_SHORT).show()
+                    when (mainViewModel.currentGameList.value) {
+                        "completedGames" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Jogos Completados' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "playingNow" -> {
+                            Toast.makeText(activity, "Remova o jogo da lista 'Jogando Agora' antes.", Toast.LENGTH_SHORT).show()
+                        }
+                        "wishList" -> {
+                            mainViewModel.removeGameToCurrentUserList("wishList")
+                            Toast.makeText(activity, "Jogo removido da lista 'Lista de Compras'.", Toast.LENGTH_SHORT).show()
+                        }
+                        "" -> {
+                            mainViewModel.addGameToCurrentUserList("wishList")
+                            Toast.makeText(activity, "Jogo adicionado à lista 'Lista de Compras'.", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            // Caso não tratado, pode adicionar lógica extra se necessário
                         }
                     }
                 },
