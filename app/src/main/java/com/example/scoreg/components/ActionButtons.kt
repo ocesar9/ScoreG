@@ -22,12 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.scoreg.R
 
-
 @Composable
 fun ActionButtons(
     onAddToCompleted: () -> Unit,
     onAddToPlaying: () -> Unit,
     onAddToWishlist: () -> Unit,
+    completedIcon: Int, // Ícone para "Jogos Completados"
+    playingIcon: Int, // Ícone para "Jogando Agora"
+    wishlistIcon: Int, // Ícone para "Lista de Compras"
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -38,7 +40,7 @@ fun ActionButtons(
     ) {
         ActionButton(
             text = "Jogos Completados",
-            icon = R.drawable.navbar_icon_1,
+            icon = completedIcon,
             onClick = onAddToCompleted
         )
 
@@ -46,7 +48,7 @@ fun ActionButtons(
 
         ActionButton(
             text = "Jogando Agora",
-            icon = R.drawable.navbar_icon_2,
+            icon = playingIcon,
             onClick = onAddToPlaying
         )
 
@@ -54,7 +56,7 @@ fun ActionButtons(
 
         ActionButton(
             text = "Lista de Compras",
-            icon = R.drawable.navbar_icon_3,
+            icon = wishlistIcon,
             onClick = onAddToWishlist
         )
     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.example.scoreg.R
 import com.example.scoreg.components.ActionButtons
 import com.example.scoreg.components.CustomTopAppBar
 import com.example.scoreg.components.GameListSection
@@ -29,7 +30,7 @@ fun GameInfoPage(
     mainViewModel.fetchAndSortGames()
 
     val activity = LocalContext.current as? Activity
-    var resultMessage by remember { mutableStateOf("") }
+    val currentGameList = mainViewModel.currentGameList.value // Obtemos o estado da lista atual do jogo
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -45,6 +46,14 @@ fun GameInfoPage(
             )
 
             GameView(game = mainViewModel.currentGame)
+
+            // Ícones de adicionar/remover para cada estado
+            val completedGamesAddIcon = R.drawable.navbar_icon_completedgames_green
+            val completedGamesRemoveIcon = R.drawable.navbar_icon_completedgames_red
+            val playingNowAddIcon = R.drawable.navbar_icon_playingnow_green
+            val playingNowRemoveIcon = R.drawable.navbar_icon_playingnow_red
+            val wishListAddIcon = R.drawable.navbar_icon_wishlist_green
+            val wishListRemoveIcon = R.drawable.navbar_icon_wishlist_red
 
             // Adicionando a Row com os botões abaixo do GameView
             ActionButtons(
@@ -112,6 +121,21 @@ fun GameInfoPage(
                         }
                     }
                 },
+                completedIcon = getIconForAction(
+                    currentList = if (mainViewModel.currentGameList.value == "completedGames") "completedGames" else "",
+                    addIcon = completedGamesAddIcon,
+                    removeIcon = completedGamesRemoveIcon
+                ),
+                playingIcon = getIconForAction(
+                    currentList = if (mainViewModel.currentGameList.value == "playingNow") "playingNow" else "",
+                    addIcon = playingNowAddIcon,
+                    removeIcon = playingNowRemoveIcon
+                ),
+                wishlistIcon = getIconForAction(
+                    currentList = if (mainViewModel.currentGameList.value == "wishList") "wishList" else "",
+                    addIcon = wishListAddIcon,
+                    removeIcon = wishListRemoveIcon
+                )
             )
         }
 
@@ -129,4 +153,13 @@ fun GameInfoPage(
                 )
             }
         }
+}
+
+@Composable
+fun getIconForAction(
+    currentList: String,
+    addIcon: Int,
+    removeIcon: Int
+): Int {
+    return if (currentList.isNotEmpty()) removeIcon else addIcon
 }

@@ -14,8 +14,6 @@ import com.google.firebase.database.ValueEventListener
 
 class MainViewModel : ViewModel() {
 
-
-
     // V Auth State  V ---------------------------------------------------------------------------
     private var _loggedIn = mutableStateOf(false)
     val loggedIn: Boolean get() = _loggedIn.value
