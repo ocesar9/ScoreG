@@ -28,7 +28,6 @@ fun GameInfoPage(
     navController: NavController,
     mainViewModel: MainViewModel,
 ) {
-    mainViewModel.fetchAndSortGames()
 
     val activity = LocalContext.current as? Activity
     val currentGameList = mainViewModel.currentGameList.value // Obtemos o estado da lista atual do jogo
@@ -52,9 +51,9 @@ fun GameInfoPage(
             val green = Color(0xFF25F396)
             val red = Color(0xFFFF0000)
 
-            val completedGamesTextColor = if (mainViewModel.currentGameList.value == "completedGames") red else green
-            val playingNowTextColor = if (mainViewModel.currentGameList.value == "playingNow") red else green
-            val wishListTextColor = if (mainViewModel.currentGameList.value == "wishList") red else green
+            val completedGamesTextColor = if (currentGameList == "completedGames") red else green
+            val playingNowTextColor = if (currentGameList == "playingNow") red else green
+            val wishListTextColor = if (currentGameList == "wishList") red else green
 
             // Ícones de adicionar/remover para cada estado
             val completedGamesAddIcon = R.drawable.navbar_icon_completedgames_green
@@ -68,7 +67,7 @@ fun GameInfoPage(
             ActionButtons(
                 onAddToCompleted = {
                     mainViewModel.addGameToCurrentUserList("completedGames")
-                    when (mainViewModel.currentGameList.value) {
+                    when (currentGameList) {
                         "completedGames" -> {
                             mainViewModel.removeGameToCurrentUserList("completedGames")
                             Toast.makeText(activity, "Jogo removido da lista 'Jogos Completados'.", Toast.LENGTH_SHORT).show()
@@ -89,7 +88,7 @@ fun GameInfoPage(
                     }
                 },
                 onAddToPlaying = {
-                    when (mainViewModel.currentGameList.value) {
+                    when (currentGameList) {
                         "completedGames" -> {
                             Toast.makeText(activity, "Remova o jogo da lista 'Jogos Completados' antes.", Toast.LENGTH_SHORT).show()
                         }
@@ -110,7 +109,7 @@ fun GameInfoPage(
                     }
                 },
                 onAddToWishlist = {
-                    when (mainViewModel.currentGameList.value) {
+                    when (currentGameList) {
                         "completedGames" -> {
                             Toast.makeText(activity, "Remova o jogo da lista 'Jogos Completados' antes.", Toast.LENGTH_SHORT).show()
                         }
@@ -131,17 +130,17 @@ fun GameInfoPage(
                     }
                 },
                 completedIcon = getIconForAction(
-                    currentList = if (mainViewModel.currentGameList.value == "completedGames") "completedGames" else "",
+                    currentList = if (currentGameList == "completedGames") "completedGames" else "",
                     addIcon = completedGamesAddIcon,
                     removeIcon = completedGamesRemoveIcon
                 ),
                 playingIcon = getIconForAction(
-                    currentList = if (mainViewModel.currentGameList.value == "playingNow") "playingNow" else "",
+                    currentList = if (currentGameList == "playingNow") "playingNow" else "",
                     addIcon = playingNowAddIcon,
                     removeIcon = playingNowRemoveIcon
                 ),
                 wishlistIcon = getIconForAction(
-                    currentList = if (mainViewModel.currentGameList.value == "wishList") "wishList" else "",
+                    currentList = if (currentGameList == "wishList") "wishList" else "",
                     addIcon = wishListAddIcon,
                     removeIcon = wishListRemoveIcon
                 ),
