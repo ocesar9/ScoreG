@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import androidx.compose.ui.graphics.Color
 import com.example.scoreg.R
 import com.example.scoreg.components.ActionButtons
 import com.example.scoreg.components.CustomTopAppBar
@@ -46,6 +47,14 @@ fun GameInfoPage(
             )
 
             GameView(game = mainViewModel.currentGame)
+
+            // Definindo as cores de texto
+            val green = Color(0xFF25F396)
+            val red = Color(0xFFFF0000)
+
+            val completedGamesTextColor = if (mainViewModel.currentGameList.value == "completedGames") red else green
+            val playingNowTextColor = if (mainViewModel.currentGameList.value == "playingNow") red else green
+            val wishListTextColor = if (mainViewModel.currentGameList.value == "wishList") red else green
 
             // Ícones de adicionar/remover para cada estado
             val completedGamesAddIcon = R.drawable.navbar_icon_completedgames_green
@@ -135,7 +144,11 @@ fun GameInfoPage(
                     currentList = if (mainViewModel.currentGameList.value == "wishList") "wishList" else "",
                     addIcon = wishListAddIcon,
                     removeIcon = wishListRemoveIcon
-                )
+                ),
+                // Passando as cores de texto apropriadas
+                completedTextColor = completedGamesTextColor,
+                playingTextColor = playingNowTextColor,
+                wishlistTextColor = wishListTextColor
             )
         }
 

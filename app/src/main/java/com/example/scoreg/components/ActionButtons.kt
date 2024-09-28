@@ -30,6 +30,9 @@ fun ActionButtons(
     completedIcon: Int, // Ícone para "Jogos Completados"
     playingIcon: Int, // Ícone para "Jogando Agora"
     wishlistIcon: Int, // Ícone para "Lista de Compras"
+    completedTextColor: Color, // Cor para "Jogos Completados"
+    playingTextColor: Color, // Cor para "Jogando Agora"
+    wishlistTextColor: Color, // Cor para "Lista de Compras"
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,7 +44,8 @@ fun ActionButtons(
         ActionButton(
             text = "Jogos Completados",
             icon = completedIcon,
-            onClick = onAddToCompleted
+            onClick = onAddToCompleted,
+            textColor = completedTextColor // Passando a cor do texto
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -49,7 +53,8 @@ fun ActionButtons(
         ActionButton(
             text = "Jogando Agora",
             icon = playingIcon,
-            onClick = onAddToPlaying
+            onClick = onAddToPlaying,
+            textColor = playingTextColor // Passando a cor do texto
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -57,13 +62,19 @@ fun ActionButtons(
         ActionButton(
             text = "Lista de Compras",
             icon = wishlistIcon,
-            onClick = onAddToWishlist
+            onClick = onAddToWishlist,
+            textColor = wishlistTextColor // Passando a cor do texto
         )
     }
 }
 
 @Composable
-fun ActionButton(text: String, icon: Int, onClick: () -> Unit) {
+fun ActionButton(
+    text: String,
+    icon: Int,
+    onClick: () -> Unit,
+    textColor: Color
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -80,7 +91,7 @@ fun ActionButton(text: String, icon: Int, onClick: () -> Unit) {
         Text(
             text = text,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF25F396),
+            color = textColor,
             fontSize = 12.sp
         )
     }
