@@ -66,7 +66,7 @@ fun GameInfoPage(
             // Adicionando a Row com os botões abaixo do GameView
             ActionButtons(
                 onAddToCompleted = {
-                    mainViewModel.addGameToCurrentUserList("completedGames")
+                    //mainViewModel.addGameToCurrentUserList("completedGames")
                     when (currentGameList) {
                         "completedGames" -> {
                             mainViewModel.removeGameToCurrentUserList("completedGames")
@@ -76,7 +76,7 @@ fun GameInfoPage(
                             Toast.makeText(activity, "Remova o jogo da lista 'Jogando Agora' antes.", Toast.LENGTH_SHORT).show()
                         }
                         "wishList" -> {
-                            Toast.makeText(activity, "Remova o jogo da lista 'Lista de Desejos' antes.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Remova o jogo da lista 'Lista de Compras' antes.", Toast.LENGTH_SHORT).show()
                         }
                         "" -> {
                             mainViewModel.addGameToCurrentUserList("completedGames")
@@ -97,7 +97,7 @@ fun GameInfoPage(
                             Toast.makeText(activity, "Jogo removido da lista 'Jogando Agora'.", Toast.LENGTH_SHORT).show()
                         }
                         "wishList" -> {
-                            Toast.makeText(activity, "Remova o jogo da lista 'Jogando Agora' antes.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Remova o jogo da lista 'Lista de Compras' antes.", Toast.LENGTH_SHORT).show()
                         }
                         "" -> {
                             mainViewModel.addGameToCurrentUserList("playingNow")
