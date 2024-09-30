@@ -3,13 +3,11 @@ package com.example.scoreg.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,19 +26,19 @@ fun Navbar(navController: NavController) {
     ) {
         NavButton(
             text = "Jogos Completados",
-            icon = R.drawable.navbar_icon_1,
+            icon = R.drawable.navbar_icon_completedgames_green,
             onClick = { navController.navigate("completedGamesPage") }
         )
 
         NavButton(
             text = "Jogando Agora",
-            icon = R.drawable.navbar_icon_2,
+            icon = R.drawable.navbar_icon_playingnow_green,
             onClick = { navController.navigate("playingNowPage") }
         )
 
         NavButton(
             text = "Lista de Compras",
-            icon = R.drawable.navbar_icon_3,
+            icon = R.drawable.navbar_icon_wishlist_green,
             onClick = { navController.navigate("wishListPage") }
         )
     }

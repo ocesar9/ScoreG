@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import com.example.scoreg.database.entities.Game
 import coil.compose.rememberImagePainter
 
-
 @Composable
 fun GameCard(
     game: Game,

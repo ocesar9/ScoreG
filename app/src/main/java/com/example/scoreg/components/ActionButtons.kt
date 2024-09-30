@@ -22,12 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.scoreg.R
 
-
 @Composable
 fun ActionButtons(
     onAddToCompleted: () -> Unit,
     onAddToPlaying: () -> Unit,
     onAddToWishlist: () -> Unit,
+    completedIcon: Int, // Ícone para "Jogos Completados"
+    playingIcon: Int, // Ícone para "Jogando Agora"
+    wishlistIcon: Int, // Ícone para "Lista de Compras"
+    completedTextColor: Color, // Cor para "Jogos Completados"
+    playingTextColor: Color, // Cor para "Jogando Agora"
+    wishlistTextColor: Color, // Cor para "Lista de Compras"
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -38,30 +43,38 @@ fun ActionButtons(
     ) {
         ActionButton(
             text = "Jogos Completados",
-            icon = R.drawable.navbar_icon_1,
-            onClick = onAddToCompleted
+            icon = completedIcon,
+            onClick = onAddToCompleted,
+            textColor = completedTextColor // Passando a cor do texto
         )
 
         Spacer(modifier = Modifier.width(8.dp))
 
         ActionButton(
             text = "Jogando Agora",
-            icon = R.drawable.navbar_icon_2,
-            onClick = onAddToPlaying
+            icon = playingIcon,
+            onClick = onAddToPlaying,
+            textColor = playingTextColor // Passando a cor do texto
         )
 
         Spacer(modifier = Modifier.width(8.dp))
 
         ActionButton(
             text = "Lista de Compras",
-            icon = R.drawable.navbar_icon_3,
-            onClick = onAddToWishlist
+            icon = wishlistIcon,
+            onClick = onAddToWishlist,
+            textColor = wishlistTextColor // Passando a cor do texto
         )
     }
 }
 
 @Composable
-fun ActionButton(text: String, icon: Int, onClick: () -> Unit) {
+fun ActionButton(
+    text: String,
+    icon: Int,
+    onClick: () -> Unit,
+    textColor: Color
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -78,7 +91,7 @@ fun ActionButton(text: String, icon: Int, onClick: () -> Unit) {
         Text(
             text = text,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF25F396),
+            color = textColor,
             fontSize = 12.sp
         )
     }
