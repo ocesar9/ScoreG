@@ -29,6 +29,15 @@ fun HomePage(
     mainViewModel.fetchAndSortGames()
     val context = LocalContext.current
 
+    // Método que procura por parte da String do título
+    mainViewModel.searchGamesByTitle("Zelda") { matchingGames ->
+        // Aqui você pode manipular a lista de jogos encontrados
+        for (game in matchingGames) {
+            println("Jogo encontrado: ${game.title}")
+        }
+    }
+
+
     Column(
         modifier = modifier
             .fillMaxSize()

@@ -173,6 +173,37 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    fun searchGamesByTitle(query: String, callback: (List<Game>) -> Unit) {
+        val gamesRef = getDatabaseReference("games")
+
+        gamesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val matchingGames = mutableListOf<Game>()
+
+                // Itera sobre todos os jogos no banco de dados
+                for (gameSnapshot in dataSnapshot.children) {
+                    val game = gameSnapshot.getValue(Game::class.java)
+                    val gameId = gameSnapshot.key
+
+                    if (game != null && gameId != null) {
+                        // Verifica se o título do jogo contém a string passada na query (ignorando maiúsculas/minúsculas)
+                        if (game.title.contains(query, ignoreCase = true)) {
+                            val gameWithId = game.copy(id = gameId)
+                            matchingGames.add(gameWithId)
+                        }
+                    }
+                }
+
+                // Chama o callback com a lista de jogos encontrados
+                callback(matchingGames)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Lida com erros, se necessário
+                callback(emptyList()) // Retorna uma lista vazia em caso de erro
+            }
+        })
+    }
 
     // V Users Table V ---------------------------------------------------------------------------
 
