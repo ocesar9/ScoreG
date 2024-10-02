@@ -13,11 +13,11 @@ import androidx.navigation.NavController
 import com.example.scoreg.components.CustomTopAppBar
 import com.example.scoreg.components.GameListSection
 import com.example.scoreg.components.Navbar
+import com.example.scoreg.components.SearchGameBar
 import com.example.scoreg.models.MainViewModel
 import com.example.scoreg.utils.IntentUtils
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,15 +28,6 @@ fun HomePage(
 ) {
     mainViewModel.fetchAndSortGames()
     val context = LocalContext.current
-
-    // Método que procura por parte da String do título
-    mainViewModel.searchGamesByTitle("Zelda") { matchingGames ->
-        // Aqui você pode manipular a lista de jogos encontrados
-        for (game in matchingGames) {
-            println("Jogo encontrado: ${game.title}")
-        }
-    }
-
 
     Column(
         modifier = modifier
@@ -50,6 +41,10 @@ fun HomePage(
                 context.startActivity(intent)
             }
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SearchGameBar(mainViewModel = mainViewModel, navController = navController)
 
         Navbar(navController = navController)
 
