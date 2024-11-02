@@ -29,9 +29,6 @@ fun ActionButtons(
     completedIcon: Int, // Ícone para "Jogos Completados"
     playingIcon: Int, // Ícone para "Jogando Agora"
     wishlistIcon: Int, // Ícone para "Lista de Compras"
-    completedTextColor: Color, // Cor para "Jogos Completados"
-    playingTextColor: Color, // Cor para "Jogando Agora"
-    wishlistTextColor: Color, // Cor para "Lista de Compras"
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -44,7 +41,7 @@ fun ActionButtons(
             text = "Jogos Completados",
             icon = completedIcon,
             onClick = onAddToCompleted,
-            textColor = completedTextColor // Passando a cor do texto
+            textColor = Color.Green
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -53,7 +50,7 @@ fun ActionButtons(
             text = "Jogando Agora",
             icon = playingIcon,
             onClick = onAddToPlaying,
-            textColor = playingTextColor // Passando a cor do texto
+            textColor = Color.Green
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -62,7 +59,7 @@ fun ActionButtons(
             text = "Lista de Compras",
             icon = wishlistIcon,
             onClick = onAddToWishlist,
-            textColor = wishlistTextColor // Passando a cor do texto
+            textColor = Color.Green
         )
     }
 }

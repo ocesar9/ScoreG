@@ -41,7 +41,8 @@ fun SearchGameBar(mainViewModel: MainViewModel, navController: NavController) {
 
     // Chama a função searchGames quando o texto da pesquisa mudar
     SearchBar(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         query = text,
         onQueryChange = {
             text = it

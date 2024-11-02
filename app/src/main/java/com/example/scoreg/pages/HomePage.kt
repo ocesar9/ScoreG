@@ -1,12 +1,16 @@
 package com.example.scoreg.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -42,15 +46,31 @@ fun HomePage(
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        SearchGameBar(mainViewModel = mainViewModel, navController = navController)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF25F396))
+                .padding(bottom = 12.dp)
+                .padding(horizontal = 8.dp),
+        ) {
+            SearchGameBar(
+                mainViewModel = mainViewModel,
+                navController = navController
+            )
 
-        Navbar(navController = navController)
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Navbar(
+                navController = navController,
+            )
+        }
 
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+        ) {
             GameListSection(
                 title = "Mais Populares",
                 games = mainViewModel.gamesSortedByScore.value.toList(),
