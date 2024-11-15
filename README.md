@@ -35,7 +35,7 @@ O projeto é uma galeria interativa de listas de games, organizada em seções c
 ## Backend 
  - Firebase
 
-#Autores 
+# Autores 
 
 [Júlio Guimarães](https://github.com/ocesar9)
 
